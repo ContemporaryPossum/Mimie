@@ -7,7 +7,8 @@ Semua fail berada di root supaya boleh terus dimuat naik ke GitHub dan disambung
 
 | Fail | Kegunaan |
 | --- | --- |
-| `index.html` | Laman utama (semua seksyen) |
+| `index.html` | Laman utama The Mimie's (semua seksyen) |
+| `bento.html` | Halaman Bento On The Go (packed food, lunch box, korporat). Dipaut dari navbar, kad servis Packed Food & Bento, dan footer |
 | `styles.css` | Semua gaya, termasuk mobile dan reduced-motion |
 | `script.js` | Menu mudah alih, tab menu, galeri lightbox, borang sebut harga ke WhatsApp |
 | `playfair.woff2`, `playfair-italic.woff2`, `jakarta.woff2` | Fon (self-hosted, tiada panggilan ke Google Fonts) |
@@ -16,6 +17,7 @@ Semua fail berada di root supaya boleh terus dimuat naik ke GitHub dan disambung
 | `og-image.jpg` | Gambar pratonton bila pautan dikongsi di WhatsApp / Facebook |
 | `hero-buffet.jpg`, `bento-overhead.jpg`, `kuih-hitea.jpg`, `dewan-majlis.jpg` | Gambar hero dan seksyen (dijana AI mengikut gaya jenama) |
 | `galeri-*.jpg`, `majlis-*.jpg`, `bernama-radio.jpg` | Gambar sebenar daripada Instagram @themimiess |
+| `bento-logo.png`, `bento-prep.jpg`, `bento-nasi-geprek.jpg`, `bento-set-*.jpg` (16) | Logo dan gambar sebenar daripada Instagram @bentoonthegomalaysia (gambar set dipotong daripada poster mereka) |
 
 ## Deploy ke Cloudflare Pages
 
@@ -27,7 +29,8 @@ Semua fail berada di root supaya boleh terus dimuat naik ke GitHub dan disambung
 
 ## Perkara yang perlu disahkan dengan klien sebelum live
 
-- Harga pakej (diambil daripada poster Instagram/TikTok mereka pada 2026). Tukar dalam seksyen `#pakej` dan `#menu` jika berubah.
+- Harga pakej (diambil daripada poster Instagram/TikTok mereka pada 2026). Tukar dalam seksyen `#pakej` dan `#menu` (index.html) serta `#set-menu` dan `#pakej-harian` (bento.html) jika berubah.
+- Harga 16 set Bento On The Go diambil daripada poster @bentoonthegomalaysia (RM6 hingga RM18 sekotak).
 - E-mel `mimisyahirah22@gmail.com` (daripada poster mereka). Tukar di seksyen `#hubungi` dan JSON-LD di `<head>` jika perlu.
 - Kedudukan pin Google Maps. Iframe menggunakan carian alamat; jika pin tidak tepat, ganti `src` iframe dengan embed daripada Google Maps > Share > Embed a map.
 - Jika mereka mahukan pautan Facebook, tambah di footer (`.footer__social`). Halaman Facebook mereka tidak dijumpai secara awam semasa penyelidikan.
@@ -38,7 +41,3 @@ Semua fail berada di root supaya boleh terus dimuat naik ke GitHub dan disambung
 - Borang sebut harga tidak menghantar data ke mana-mana pelayan. Ia membina mesej dan membuka WhatsApp.
 - Semua ikon adalah SVG sebaris (Phosphor Icons, lesen MIT). Tiada CDN luar kecuali iframe Google Maps.
 - Fon dan gambar dimuat dari fail tempatan. Jika dibuka dengan double-click (file://), Chrome mungkin tidak memuat fon .woff2; ini normal dan tidak berlaku selepas deploy.
-
-## Fail pratonton (tidak perlu dimuat naik ke GitHub)
-
-`preview-desktop-full.jpg`, `preview-desktop-hero.jpg`, `preview-mobile-hero.jpg` adalah tangkapan skrin untuk rujukan anda dan klien sahaja. Boleh dipadam sebelum upload.

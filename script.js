@@ -40,13 +40,15 @@
     });
   }
 
-  /* ---------- Nav: active section highlight ---------- */
-  var sectionIds = ["servis", "pakej", "menu", "kisah", "galeri", "hubungi"];
+  /* ---------- Nav: active section highlight (ids read from the nav itself) ---------- */
   var navAnchors = {};
-  sectionIds.forEach(function (id) {
-    var a = links ? links.querySelector('a[href="#' + id + '"]') : null;
-    if (a) navAnchors[id] = a;
-  });
+  var sectionIds = [];
+  if (links) {
+    Array.prototype.forEach.call(links.querySelectorAll('a[href^="#"]'), function (a) {
+      var id = a.getAttribute("href").slice(1);
+      if (id && document.getElementById(id)) { navAnchors[id] = a; sectionIds.push(id); }
+    });
+  }
   if ("IntersectionObserver" in window) {
     var activeObs = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
@@ -149,10 +151,32 @@
     }, { passive: true });
   }
 
+  /* ---------- Set menu price filters (bento.html) ---------- */
+  var filterBtns = Array.prototype.slice.call(document.querySelectorAll(".filter[data-filter]"));
+  var setCards = Array.prototype.slice.call(document.querySelectorAll(".set[data-band]"));
+  if (filterBtns.length && setCards.length) {
+    filterBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var f = btn.getAttribute("data-filter");
+        filterBtns.forEach(function (b) {
+          var on = b === btn;
+          b.classList.toggle("is-active", on);
+          b.setAttribute("aria-pressed", on ? "true" : "false");
+        });
+        setCards.forEach(function (c) {
+          var show = f === "all" || c.getAttribute("data-band") === f;
+          c.hidden = !show;
+          if (show) c.classList.add("is-in");
+        });
+      });
+    });
+  }
+
   /* ---------- Quotation form -> WhatsApp ---------- */
   var form = document.getElementById("quote-form");
   var formError = document.getElementById("form-error");
   if (form) {
+    var brand = form.getAttribute("data-brand") || "The Mimie's";
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var f = form.elements;
@@ -171,7 +195,7 @@
         if (p.length === 3) tarikh = p[2] + "/" + p[1] + "/" + p[0];
       }
       var lines = [
-        "Salam The Mimie's, saya nak minta sebut harga.",
+        "Salam " + brand + ", saya nak minta sebut harga.",
         "",
         "Nama: " + nama,
         "Jenis majlis: " + jenis,
