@@ -77,9 +77,8 @@
     reveals.forEach(function (el) { el.classList.add("is-in"); });
   }
 
-  /* ---------- Menu tabs (ARIA tabs pattern) ---------- */
-  var tablist = document.querySelector('[role="tablist"]');
-  if (tablist) {
+  /* ---------- Tabs: menu + katalog (ARIA tabs pattern) ---------- */
+  Array.prototype.forEach.call(document.querySelectorAll('[role="tablist"]'), function (tablist) {
     var tabs = Array.prototype.slice.call(tablist.querySelectorAll('[role="tab"]'));
     function selectTab(tab) {
       tabs.forEach(function (t) {
@@ -94,32 +93,36 @@
       t.addEventListener("click", function () { selectTab(t); });
       t.addEventListener("keydown", function (e) {
         var n = null;
-        if (e.key === "ArrowRight") n = tabs[(i + 1) % tabs.length];
-        if (e.key === "ArrowLeft") n = tabs[(i - 1 + tabs.length) % tabs.length];
+        if (e.key === "ArrowRight" || e.key === "ArrowDown") n = tabs[(i + 1) % tabs.length];
+        if (e.key === "ArrowLeft" || e.key === "ArrowUp") n = tabs[(i - 1 + tabs.length) % tabs.length];
         if (e.key === "Home") n = tabs[0];
         if (e.key === "End") n = tabs[tabs.length - 1];
         if (n) { e.preventDefault(); n.focus(); selectTab(n); }
       });
     });
-  }
+  });
 
-  /* ---------- Gallery lightbox ---------- */
-  var items = Array.prototype.slice.call(document.querySelectorAll(".gallery__item"));
+  /* ---------- Lightbox (gallery, katalog posters, feedback) ----------
+     Prev/next stay inside the nearest [data-lb] group. */
+  var items = Array.prototype.slice.call(document.querySelectorAll("[data-full]"));
   var lb = document.getElementById("lightbox");
   var lbImg = document.getElementById("lightbox-img");
   var lbCap = document.getElementById("lightbox-cap");
-  var current = 0, lastFocus = null;
+  var set = [], current = 0, lastFocus = null;
 
   function showAt(i) {
-    current = (i + items.length) % items.length;
-    var btn = items[current];
+    current = (i + set.length) % set.length;
+    var btn = set[current];
     lbImg.src = btn.getAttribute("data-full");
     lbImg.alt = btn.querySelector("img").alt || "";
     lbCap.textContent = btn.getAttribute("data-caption") || "";
   }
-  function openLb(i) {
+  function openLb(btn) {
     lastFocus = document.activeElement;
-    showAt(i);
+    var group = btn.closest("[data-lb]");
+    set = group ? Array.prototype.slice.call(group.querySelectorAll("[data-full]")) : [btn];
+    lb.classList.toggle("is-single", set.length < 2);
+    showAt(set.indexOf(btn));
     lb.hidden = false;
     document.body.style.overflow = "hidden";
     lb.querySelector(".lightbox__close").focus();
@@ -131,7 +134,7 @@
     if (lastFocus) lastFocus.focus();
   }
   if (lb && items.length) {
-    items.forEach(function (btn, i) { btn.addEventListener("click", function () { openLb(i); }); });
+    items.forEach(function (btn) { btn.addEventListener("click", function () { openLb(btn); }); });
     lb.querySelector(".lightbox__close").addEventListener("click", closeLb);
     lb.querySelector(".lightbox__nav--prev").addEventListener("click", function () { showAt(current - 1); });
     lb.querySelector(".lightbox__nav--next").addEventListener("click", function () { showAt(current + 1); });
@@ -171,6 +174,16 @@
       });
     });
   }
+
+  /* ---------- Katalog: carry the chosen category into the quote form ---------- */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-katalog]"), function (a) {
+    a.addEventListener("click", function () {
+      var nota = document.getElementById("f-nota");
+      if (!nota) return;
+      var line = "Berminat: " + a.getAttribute("data-katalog");
+      if (nota.value.indexOf(line) === -1) nota.value = nota.value ? nota.value + "\n" + line : line;
+    });
+  });
 
   /* ---------- Quotation form -> WhatsApp ---------- */
   var form = document.getElementById("quote-form");
