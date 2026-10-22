@@ -10,21 +10,23 @@ Semua fail berada di root supaya boleh terus dimuat naik ke GitHub dan disambung
 | `index.html` | Laman utama The Mimie's (semua seksyen, termasuk `#katalog` dan `#maklum-balas`) |
 | `bento.html` | Halaman Bento On The Go (packed food, lunch box, korporat). Dipaut dari navbar, kad servis Packed Food & Bento, dan footer |
 | `styles.css` | Semua gaya, termasuk mobile dan reduced-motion. Palet pink dikongsi kedua-dua halaman (token dalam `:root`, nilai emas asal dicatat dalam komen di atas fail) |
-| `script.js` | Menu mudah alih, tab menu dan katalog, lightbox (galeri, poster katalog, maklum balas), borang sebut harga ke WhatsApp |
+| `script.js` | Menu mudah alih, tab menu dan katalog, lightbox (galeri, poster katalog, maklum balas, set bento), penapis harga set, butang rel maklum balas, borang sebut harga ke WhatsApp |
 | `playfair.woff2`, `playfair-italic.woff2`, `jakarta.woff2` | Fon (self-hosted, tiada panggilan ke Google Fonts) |
 | `logo.png`, `logo-dark.png`, `emblem.png` | Logo telus untuk latar cerah, latar gelap, dan emblem sahaja (navbar) |
 | `favicon.png`, `favicon-32.png` | Ikon tab pelayar |
 | `og-image.jpg` | Gambar pratonton bila pautan dikongsi di WhatsApp / Facebook |
 | `bento-overhead.jpg`, `hero-buffet.jpg`, `kuih-hitea.jpg`, `dewan-majlis.jpg` | Gambar hero dan seksyen (dijana AI mengikut gaya jenama). Hero laman utama kini `bento-overhead.jpg`; `hero-buffet.jpg` digunakan dalam kad servis Katering & Buffet |
 | `galeri-*.jpg`, `majlis-*.jpg`, `bernama-radio.jpg` | Gambar sebenar daripada Instagram @themimiess |
-| `bento-logo.png`, `bento-prep.jpg`, `bento-nasi-geprek.jpg`, `bento-<nama-set>.jpg` (16) | Logo dan gambar sebenar daripada Instagram @bentoonthegomalaysia (gambar set dipotong daripada poster mereka) |
-| `katalog-*.jpg` (18), `goodies-logo.jpg` | Poster katalog asal daripada klien (Okt 2026), dipaparkan dalam seksyen `#katalog` mengikut kategori |
-| `maklum-balas-pelanggan.jpg` | Poster maklum balas pelanggan daripada klien, seksyen `#maklum-balas` |
+| `bento-logo.png`, `bento-prep.jpg`, `bento-nasi-geprek.jpg` | Logo dan gambar sebenar daripada Instagram @bentoonthegomalaysia |
+| `set-<nama>.jpg` (50), `set-<nama>-thumb.jpg` (50) | Poster set Bento On The Go daripada klien (21 Okt 2026). Poster penuh untuk lightbox, thumbnail 4:5 untuk kad di `#set-menu` (bento.html) |
+| `bento-banner.jpg` | Banner "Packed Food" daripada klien, digunakan sebagai `og:image` bento.html |
+| `katalog-*.jpg` (43), `goodies-logo.jpg` | Poster katalog asal daripada klien (20 dan 21 Okt 2026), dipaparkan dalam seksyen `#katalog` mengikut kategori. Poster yang sama dalam dua kategori menggunakan satu fail |
+| `feedback-01.jpg` hingga `feedback-11.jpg` | Poster maklum balas pelanggan daripada klien, rel di seksyen `#maklum-balas` |
 | `preview-*.jpg` | Tangkapan skrin pratonton sahaja. Tidak dirujuk oleh laman dan boleh dikecualikan daripada repo |
 
 ## Deploy ke Cloudflare Pages
 
-1. Cipta repo GitHub baharu dan muat naik SEMUA fail dalam folder ini ke root repo.
+1. Cipta repo GitHub baharu dan muat naik SEMUA fail dalam folder ini ke root repo. GitHub web menerima maksimum 100 fail setiap kali muat naik, jadi muat naik dalam dua kumpulan (contoh: semua `set-*.jpg` dahulu, kemudian fail lain).
 2. Cloudflare Dashboard > Workers & Pages > Create > Pages > Connect to Git > pilih repo.
 3. Build settings: Framework preset `None`, Build command kosong, Build output directory `/` (atau kosong).
 4. Save and Deploy. Selepas domain sebenar disambung, kemas kini `og:image` dalam `index.html` kepada URL penuh
@@ -33,7 +35,14 @@ Semua fail berada di root supaya boleh terus dimuat naik ke GitHub dan disambung
 ## Perkara yang perlu disahkan dengan klien sebelum live
 
 - Harga pakej (diambil daripada poster Instagram/TikTok mereka pada 2026). Tukar dalam seksyen `#pakej`, `#katalog` dan `#menu` (index.html) serta `#set-menu` dan `#pakej-harian` (bento.html) jika berubah.
-- Harga 16 set Bento On The Go diambil daripada poster @bentoonthegomalaysia (RM6 hingga RM18 sekotak).
+- Harga 50 set Bento On The Go diambil daripada poster klien (RM5 hingga RM30 sekotak). Dua poster tidak dipaparkan kerana menu tidak sepadan dengan nama: "Set Daging Kunyit" (2c8b545e, menu Ayam Lemak Cili Api) dan "Set Bolognese" (b889d333, menu Spaghetti Oglio Olio Chicken).
+- Set dengan nama sama tetapi menu atau harga berbeza: Set Vegetarian (RM10, RM10, RM12), Set Nasi Putih (RM8, RM13, RM22), Set Nasi Istimewa (RM8, RM10), Set Nasi Goreng Cina (RM9, RM12). Semua dipaparkan.
+- Salah eja pada poster Bento (teks laman sudah dibetulkan): "Lomak Cili Api", "Ariomatic Rice", "Salad Timato", "Pakeri Nenas", "Spagheti", "Oglio Oglio".
+- Poster Lunch & Dinner Bajet 4 menyenaraikan "Melati" dua kali (RM12 dan RM15). Nama Melati, Cempaka dan Kemboja juga digunakan semula dengan harga lain dalam poster 9.
+- Pakej Ainur Madhihah: poster bajet menyebut buffet RM15 / individu RM17, poster kenduri "Hot Selling" menyebut RM16/pax (RM1,600 untuk 100 pax).
+- Poster Ainur Madhihah menyebut liputan "KL, Selangor, Negeri Sembilan". Laman masih menyebut KL, Selangor, Putrajaya, Cyberjaya dan Kuala Selangor; tambah Negeri Sembilan jika disahkan.
+- Poster maklum balas 11 (Euroclear Bank) mencetak nombor WhatsApp "018-97336421" (satu digit lebih).
+- Poster akhir Bento menyebut Instagram "bentooonthegomalaysia" (tiga huruf o) dan Facebook/TikTok "Bento On The Go Malaysia" tanpa pautan. Laman masih memaut @bentoonthegomalaysia sahaja.
 - E-mel `mimisyahirah22@gmail.com` (daripada poster mereka). Tukar di seksyen `#hubungi` dan JSON-LD di `<head>` jika perlu.
 - Kedudukan pin Google Maps. Iframe menggunakan carian alamat; jika pin tidak tepat, ganti `src` iframe dengan embed daripada Google Maps > Share > Embed a map.
 - Jika mereka mahukan pautan Facebook, tambah di footer (`.footer__social`). Halaman Facebook mereka tidak dijumpai secara awam semasa penyelidikan.
