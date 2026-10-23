@@ -29,7 +29,10 @@ Semua fail berada di root supaya boleh terus dimuat naik ke GitHub dan disambung
 1. Cipta repo GitHub baharu dan muat naik SEMUA fail dalam folder ini ke root repo. GitHub web menerima maksimum 100 fail setiap kali muat naik, jadi muat naik dalam dua kumpulan (contoh: semua `set-*.jpg` dahulu, kemudian fail lain).
 2. Cloudflare Dashboard > Workers & Pages > Create > Pages > Connect to Git > pilih repo.
 3. Build settings: Framework preset `None`, Build command kosong, Build output directory `/` (atau kosong).
-4. Save and Deploy. Selepas domain sebenar disambung, kemas kini `og:image` dalam `index.html` kepada URL penuh
+4. Projek ini dibina sebagai Cloudflare Worker (`npx wrangler deploy`, tetapan dalam `wrangler.jsonc`, folder aset `.`).
+   Fail `.assetsignore` WAJIB ada di root: ia mengecualikan folder `.git` (sejarah repo, lebih 25 MiB, melebihi had Cloudflare),
+   `README.md`, `wrangler.jsonc` dan `preview-*.jpg` daripada deploy. Tanpa fail ini deploy gagal dengan "Asset too large".
+5. Save and Deploy. Selepas domain sebenar disambung, kemas kini `og:image` dalam `index.html` kepada URL penuh
    (contoh `https://themimies.com/og-image.jpg`) supaya pratonton WhatsApp berfungsi.
 
 ## Perkara yang perlu disahkan dengan klien sebelum live
