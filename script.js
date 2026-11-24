@@ -177,15 +177,34 @@
     });
   }
 
-  /* ---------- Feedback rail: prev/next buttons (no scroll listeners) ---------- */
-  var rail = document.getElementById("feedback-rail");
-  if (rail) {
-    Array.prototype.forEach.call(document.querySelectorAll("[data-rail]"), function (b) {
-      b.addEventListener("click", function () {
-        var dir = b.getAttribute("data-rail") === "next" ? 1 : -1;
-        var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        rail.scrollBy({ left: dir * rail.clientWidth * 0.8, behavior: reduce ? "auto" : "smooth" });
-      });
+  /* ---------- Horizontal rails: prev/next buttons scroll the rail named in aria-controls ---------- */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-rail]"), function (b) {
+    b.addEventListener("click", function () {
+      var rail = document.getElementById(b.getAttribute("aria-controls"));
+      if (!rail) return;
+      var dir = b.getAttribute("data-rail") === "next" ? 1 : -1;
+      var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      rail.scrollBy({ left: dir * rail.clientWidth * 0.8, behavior: reduce ? "auto" : "smooth" });
+    });
+  });
+
+  /* ---------- Client list: show the first 30 names, button reveals the rest ---------- */
+  var klienList = document.getElementById("klien-list");
+  var klienBtn = document.getElementById("klien-more");
+  if (klienList && klienBtn) {
+    var total = klienList.children.length;
+    klienList.setAttribute("data-collapsed", "");
+    klienBtn.hidden = false;
+    klienBtn.addEventListener("click", function () {
+      var open = klienBtn.getAttribute("aria-expanded") === "true";
+      klienBtn.setAttribute("aria-expanded", open ? "false" : "true");
+      klienBtn.textContent = open ? "Lihat semua " + total + " nama" : "Tutup senarai";
+      if (open) {
+        klienList.setAttribute("data-collapsed", "");
+        klienList.scrollIntoView({ block: "start" });
+      } else {
+        klienList.removeAttribute("data-collapsed");
+      }
     });
   }
 

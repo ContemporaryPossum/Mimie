@@ -1,10 +1,12 @@
 /* =========================================================
    The Mimie's Catering & Food Delivery
-   Palette: pink / blush / charcoal, shared by The Mimie's and
-   Bento On The Go (client request, Oct 2026). The token names
-   (--gold etc.) are kept from the original cream-gold palette:
-   cream #FBF6EC, cream-2 #F3EBDB, cream-3 #EADFCB, gold #B8924F,
-   gold-2 #D5B57A, gold-deep #8E6B2E. Swap the values back to revert.
+   Two themes share this file through the colour tokens below:
+   - :root      Bento On The Go pink (bento.html, and the default).
+   - .mimie-page The Mimie's deep green and gold from the 2026 company
+                 profile (index.html, <body class="mimie-page">). Its
+                 tokens and overrides are in the last block of this file.
+   Token names (--gold, --ink...) are historical: on the pink theme
+   --gold is pink, on the green theme --ink is deep green.
    ========================================================= */
 
 @font-face {
@@ -223,7 +225,9 @@ body::after {
 .section__head h2 { font-size: clamp(1.9rem, 3.6vw, 2.9rem); }
 .section__head p { margin-top: 1rem; color: var(--muted); font-size: 1.05rem; max-width: 62ch; }
 
-/* ---------- Bento (services) ---------- */
+/* ---------- Bento (services, index.html) ----------
+   6 cells. Desktop 12 cols x 3 rows: tall cell (4 cols x 3 rows) on the left,
+   then 5+3, 3+5 and 8 on the right. Tablet 6 cols x 4 rows. Phone 1 col. */
 .bento {
   display: grid; gap: 1.1rem;
   grid-template-columns: repeat(12, 1fr);
@@ -236,11 +240,12 @@ body::after {
   transition: transform .5s var(--ease), box-shadow .5s var(--ease);
 }
 .bento__cell:hover { transform: translateY(-4px); box-shadow: 0 30px 50px -30px rgba(30, 25, 19, .35); }
-.bento__cell--lg { grid-column: span 4; grid-row: span 2; }
+.bento__cell--lg { grid-column: span 4; grid-row: span 3; }
 .bento__cell:nth-child(2) { grid-column: span 5; }
 .bento__cell:nth-child(3) { grid-column: span 3; }
 .bento__cell:nth-child(4) { grid-column: span 3; }
-.bento__cell--wide { grid-column: span 5; }
+.bento__cell:nth-child(5) { grid-column: span 5; }
+.bento__cell--wide { grid-column: span 8; }
 .bento__cell--img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
 .bento__cell--img:hover img { transform: scale(1.05); }
 .bento__cell--img::after {
@@ -265,12 +270,12 @@ body::after {
   .bento { grid-template-columns: repeat(6, 1fr); grid-auto-rows: 230px; }
   .bento__cell--lg { grid-column: span 3; grid-row: span 2; }
   .bento__cell:nth-child(2) { grid-column: span 3; }
-  .bento__cell:nth-child(3), .bento__cell:nth-child(4) { grid-column: span 3; }
+  .bento__cell:nth-child(3), .bento__cell:nth-child(4), .bento__cell:nth-child(5) { grid-column: span 3; }
   .bento__cell--wide { grid-column: span 6; }
 }
 @media (max-width: 600px) {
   .bento { grid-template-columns: 1fr; grid-auto-rows: auto; }
-  .bento__cell, .bento__cell--lg, .bento__cell:nth-child(2), .bento__cell:nth-child(3), .bento__cell:nth-child(4), .bento__cell--wide { grid-column: 1; grid-row: auto; min-height: 240px; }
+  .bento__cell, .bento__cell--lg, .bento__cell:nth-child(2), .bento__cell:nth-child(3), .bento__cell:nth-child(4), .bento__cell:nth-child(5), .bento__cell--wide { grid-column: 1; grid-row: auto; min-height: 240px; }
   .bento__cell--img { min-height: 320px; }
 }
 
@@ -462,9 +467,10 @@ body::after {
 .feedback__head h2 { font-size: clamp(2rem, 4vw, 3.2rem); max-width: 20ch; }
 .feedback__head p { margin-top: 1rem; color: var(--ink-2); font-size: 1.05rem; line-height: 1.7; max-width: 62ch; }
 .feedback__ctrl { display: flex; gap: .5rem; flex: none; }
-.feedback__btn { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: var(--cream); transition: transform .25s var(--ease), background .25s; }
-.feedback__btn:hover { background: var(--ink-2); transform: translateY(-2px); }
-.feedback__btn .ic { width: 1.4rem; height: 1.4rem; }
+/* Round prev/next buttons for horizontal rails (feedback here, poster rails on bento.html) */
+.feedback__btn, .rail-btn { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: var(--cream); transition: transform .25s var(--ease), background .25s; }
+.feedback__btn:hover, .rail-btn:hover { background: var(--ink-2); transform: translateY(-2px); }
+.feedback__btn .ic, .rail-btn .ic { width: 1.4rem; height: 1.4rem; }
 /* Full-bleed rail; side padding lines the first poster up with .wrap */
 .feedback__rail {
   --gutter: max(1.25rem, (100% - var(--wrap)) / 2);
@@ -654,6 +660,34 @@ body::after {
 }
 .fineprint a { color: var(--gold-deep); font-weight: 600; border-bottom: 1px solid var(--gold-2); }
 
+/* Katalog menu bento: two tabs, each a full-bleed rail of the client's catalogue posters */
+.bcat__tabs { display: flex; flex-wrap: wrap; gap: .5rem; }
+.bcat__tab small { font-size: .8rem; font-weight: 500; opacity: .7; margin-left: .4rem; }
+.bcat__tab[aria-selected="true"] { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+.bpanel { margin-top: 1.6rem; animation: fade .5s var(--ease); }
+.bpanel[hidden] { display: none; }
+.bpanel__bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem 1.5rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+.bpanel__bar p { color: var(--ink-2); max-width: 62ch; }
+.bpanel__bar p b { color: var(--gold-deep); }
+.bpanel__actions { display: flex; align-items: center; gap: .6rem; }
+.prail {
+  --gutter: max(1.25rem, (100% - var(--wrap)) / 2);
+  display: flex; gap: 1rem; overflow-x: auto; overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity; scroll-padding-inline: var(--gutter);
+  padding: .4rem var(--gutter) 1.4rem;
+  scrollbar-width: thin; scrollbar-color: var(--gold-deep) transparent;
+}
+.prail:focus-visible { outline-offset: -3px; }
+.prail__item { flex: none; width: clamp(250px, 24vw, 330px); padding: 0; overflow: hidden; border-radius: var(--radius); scroll-snap-align: start; background: #fff; box-shadow: 0 30px 50px -34px rgba(176, 53, 94, .45); }
+.prail__item img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; transition: transform .8s var(--ease); }
+.prail__item:hover img { transform: scale(1.03); }
+@media (max-width: 640px) {
+  .prail { --gutter: .75rem; }
+  .prail__item { width: 76vw; }
+  .bpanel__actions .rail-btn { display: none; }
+  .bcat__tab small { display: none; }
+}
+
 /* Day schedule (ink section) */
 .day { background: var(--ink); color: var(--cream); }
 .day .section__head h2 { color: #fff; }
@@ -712,5 +746,175 @@ body::after {
 
 @media (prefers-reduced-motion: reduce) {
   .eyebrow, .bhero__title, .bhero__sub, .bhero__cta, .collage { animation: none; opacity: 1; transform: none; }
-  .set, .filter, .btn--outline { transition: none; }
+  .set, .filter, .btn--outline, .prail__item img, .rail-btn { transition: none; }
+  .bpanel { animation: none; }
+}
+
+/* =========================================================
+   THE MIMIE'S (index.html): 2026 company profile look.
+   Deep green and gold with ivory reading sections and the TM
+   monogram. Colours sampled from the profile: page #081710,
+   card #102419, emerald rule #205C43, gold from the TM logo.
+   Everything here is scoped to .mimie-page, so bento.html is untouched.
+   ========================================================= */
+.mimie-page {
+  --cream: #F7F3E8;
+  --cream-2: #EEE7D5;
+  --cream-3: #E2D7BC;
+  --gold: #C9A45C;
+  --gold-2: #E3C88F;
+  --gold-deep: #7A5B20;
+  --ink: #0A1A13;
+  --ink-2: #1D3A2D;
+  --muted: #56655B;
+  --line: rgba(10, 26, 19, 0.12);
+  --emerald: #205C43;
+  --panel: #10261B;
+  --hair: rgba(201, 164, 92, .38);
+}
+.mimie-page ::selection { background: var(--gold-2); color: var(--ink); }
+.mimie-page :focus-visible { outline-color: var(--gold-deep); }
+.mimie-page :is(.nav, .hero, .facts, .katalog-sec, .acara, .klien__panel, .footer, .pakej__featured, .bento__cell--img, .bento__cell--emerald, .lightbox) :focus-visible { outline-color: var(--gold-2); }
+
+/* Small gold label above a heading (used sparingly: servis, acara, hubungi) */
+.kicker { display: block; margin-bottom: .9rem; font-size: .74rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-deep); }
+.acara .kicker { color: var(--gold); }
+
+/* Section heads close with a thin gold rule, as in the profile pages */
+.mimie-page .section__head { max-width: none; padding-bottom: clamp(1.2rem, 2vw, 1.6rem); border-bottom: 1px solid var(--hair); }
+.mimie-page .section__head h2 { max-width: 26ch; }
+
+/* Nav: deep green bar with the profile's emerald top band */
+.mimie-page .nav { background: rgba(8, 23, 16, .92); box-shadow: inset 0 3px 0 var(--emerald); }
+.mimie-page .nav.is-scrolled { border-bottom-color: var(--hair); box-shadow: inset 0 3px 0 var(--emerald), 0 12px 30px -22px rgba(0, 0, 0, .7); }
+.mimie-page .nav__brand img { border-radius: 50%; box-shadow: 0 0 0 1px var(--hair); }
+.mimie-page .nav__brand-text strong { color: #FBF8F0; }
+.mimie-page .nav__brand-text small { color: var(--gold-2); }
+.mimie-page .nav__links a:not(.btn) { color: rgba(247, 243, 232, .8); }
+.mimie-page .nav__links a:not(.btn):hover, .mimie-page .nav__links a.is-active { color: #fff; }
+.mimie-page .nav__burger { color: var(--cream); }
+@media (max-width: 1080px) {
+  .mimie-page .nav__links { background: var(--ink); }
+  .mimie-page .nav__links a:not(.btn) { border-bottom-color: rgba(247, 243, 232, .12); }
+}
+
+/* Hero */
+.mimie-page .hero__scrim {
+  background:
+    linear-gradient(90deg, rgba(6, 19, 13, .9) 0%, rgba(6, 19, 13, .68) 40%, rgba(6, 19, 13, .2) 70%, rgba(6, 19, 13, .05) 100%),
+    linear-gradient(0deg, rgba(6, 19, 13, .6) 0%, rgba(6, 19, 13, 0) 40%);
+}
+.mimie-page .hero__content::before { content: ""; display: block; width: 72px; height: 2px; margin-bottom: 1.6rem; background: var(--gold); }
+.mimie-page .hero__title span { color: var(--gold-2); font-style: italic; }
+@media (max-width: 640px) {
+  .mimie-page .hero__scrim { background: linear-gradient(0deg, rgba(6, 19, 13, .93) 0%, rgba(6, 19, 13, .62) 55%, rgba(6, 19, 13, .25) 100%); }
+}
+
+.mimie-page .facts { background: var(--panel); border-top: 1px solid var(--hair); }
+
+/* Services grid */
+.mimie-page .bento__cell--plain { background: #FFFDF7; }
+.mimie-page .bento__cell:hover { box-shadow: 0 30px 50px -30px rgba(10, 26, 19, .4); }
+.mimie-page .bento__cell--img::after { background: linear-gradient(0deg, rgba(6, 19, 13, .96) 0%, rgba(6, 19, 13, .86) 40%, rgba(6, 19, 13, .5) 70%, rgba(6, 19, 13, .12) 100%); }
+.mimie-page .bento__cell--wide::after { background: linear-gradient(90deg, rgba(6, 19, 13, .95) 0%, rgba(6, 19, 13, .86) 50%, rgba(6, 19, 13, .25) 100%); }
+.mimie-page .bento__cell--img p { color: rgba(247, 243, 232, .9); }
+.mimie-page .bento__cell--wide .bento__body { max-width: 34rem; }
+.mimie-page .bento__cell--plain .ic--lg { color: var(--gold-deep); }
+.bento__cell--emerald {
+  background: radial-gradient(120% 90% at 100% 0%, rgba(201, 164, 92, .26), transparent 55%), linear-gradient(160deg, var(--emerald), var(--ink));
+  color: var(--cream); border: 1px solid var(--hair);
+}
+.bento__cell--emerald h3 { color: #fff; }
+.bento__cell--emerald p { color: rgba(247, 243, 232, .8); }
+.bento__cell--emerald .ic--lg { color: var(--gold-2); }
+
+/* Packages, cards, form */
+.mimie-page .pakej__featured { background-image: radial-gradient(60% 50% at 100% 0%, rgba(201, 164, 92, .26), transparent 70%); border: 1px solid var(--hair); }
+.mimie-page .tier--top { background: rgba(201, 164, 92, .16); border-color: rgba(227, 200, 143, .45); }
+.mimie-page .pakej__featured .btn--dark { background: var(--gold); color: var(--ink); }
+.mimie-page .pakej__featured .btn--dark:hover { background: var(--gold-2); }
+.mimie-page .bento__cell--tint p { color: rgba(10, 26, 19, .78); }
+.mimie-page .pkg { background: #FFFDF7; box-shadow: inset 0 2px 0 var(--gold); }
+.mimie-page .pkg:hover { box-shadow: inset 0 2px 0 var(--gold), 0 24px 40px -30px rgba(10, 26, 19, .4); }
+.mimie-page .chips li, .mimie-page .step, .mimie-page .form { background: #FFFDF7; }
+.mimie-page .form input::placeholder, .mimie-page .form textarea::placeholder { color: #7C877F; }
+.mimie-page .form input:focus, .mimie-page .form select:focus, .mimie-page .form textarea:focus { box-shadow: 0 0 0 3px rgba(201, 164, 92, .32); }
+
+/* Footer and lightbox */
+.mimie-page .footer { border-top: 1px solid var(--hair); }
+.mimie-page .footer__brand img { width: 168px; height: 168px; margin: 0 0 1.3rem; border-radius: 50%; box-shadow: 0 0 0 1px var(--hair), 0 30px 60px -30px rgba(0, 0, 0, .8); }
+.mimie-page .lightbox { background: rgba(5, 15, 10, .95); }
+
+/* ---------- Acara (major events, dark) ---------- */
+.acara { background: var(--ink); color: var(--cream); box-shadow: inset 0 3px 0 var(--emerald); }
+.acara .section__head h2 { color: #fff; }
+.acara .section__head p { color: rgba(247, 243, 232, .72); }
+.feat { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: clamp(1.6rem, 4vw, 3.5rem); align-items: center; }
+.feat + .feat { margin-top: clamp(3rem, 6vw, 4.5rem); }
+.feat--flip { grid-template-columns: minmax(0, 1fr) minmax(0, 380px); }
+.feat--flip .feat__media { order: 2; }
+.feat__media { display: grid; gap: .6rem; }
+.feat__media--trio { grid-template-columns: 1fr 1fr; }
+.feat__media--trio > :first-child { grid-column: 1 / -1; }
+.feat__shot { display: block; padding: 0; overflow: hidden; border-radius: var(--radius-sm); background: var(--panel); }
+.feat__shot img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+.feat__shot:hover img { transform: scale(1.03); }
+.feat__media--trio > :first-child img { aspect-ratio: 645 / 285; }
+.feat__media--trio > :not(:first-child) img { aspect-ratio: 4 / 3; }
+.feat__tag { display: inline-block; padding: .3rem .8rem; border-radius: 999px; border: 1px solid var(--hair); color: var(--gold-2); font-size: .8rem; font-weight: 600; }
+.feat__body h3 { margin-top: 1rem; font-size: clamp(1.7rem, 3vw, 2.4rem); color: #fff; }
+.feat__meta { margin-top: .5rem; color: rgba(247, 243, 232, .65); font-size: .95rem; }
+.feat__stats { display: flex; gap: 2.6rem; margin: 1.4rem 0 0; padding: 1.1rem 0; border-block: 1px solid var(--hair); }
+.feat__stats div { display: flex; flex-direction: column-reverse; }
+.feat__stats dd { margin: 0; font-family: var(--font-display); font-size: 2.6rem; line-height: 1; color: var(--gold-2); }
+.feat__stats dt { margin-top: .4rem; font-size: .85rem; color: rgba(247, 243, 232, .7); }
+.feat__text { margin-top: 1.2rem; color: rgba(247, 243, 232, .8); line-height: 1.65; }
+.feat__menu { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: 1.2rem; }
+.feat__menu li { padding: .35rem .75rem; border-radius: 999px; background: rgba(247, 243, 232, .06); border: 1px solid rgba(247, 243, 232, .14); font-size: .85rem; color: rgba(247, 243, 232, .85); }
+/* Other events: profile-style cards with an emerald rule on the left. 4 singles + 1 wide = full rows at 3 and 2 cols */
+.acara__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: clamp(3rem, 6vw, 4.5rem); }
+.acara__item { padding: 1.3rem 1.4rem; background: var(--panel); border-radius: var(--radius-sm); border-left: 3px solid var(--emerald); }
+.acara__item--wide { grid-column: span 2; }
+.acara__item h3 { font-size: 1.18rem; color: var(--gold-2); }
+.acara__when { display: block; margin-top: .45rem; font-size: .88rem; font-weight: 600; color: #fff; }
+.acara__item p { margin-top: .45rem; font-size: .9rem; color: rgba(247, 243, 232, .68); line-height: 1.55; }
+@media (max-width: 960px) {
+  .feat, .feat--flip { grid-template-columns: minmax(0, 1fr); }
+  .feat--flip .feat__media { order: 0; max-width: 420px; }
+  .acara__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .acara__list { grid-template-columns: minmax(0, 1fr); }
+  .acara__item--wide { grid-column: auto; }
+  .feat__stats { gap: 1.8rem; }
+}
+
+/* ---------- Klien (client list) ---------- */
+.klien__grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.6fr); gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+.klien__head { position: sticky; top: calc(var(--nav-h) + 1.5rem); }
+.klien__head h2 { font-size: clamp(1.9rem, 3.4vw, 2.7rem); }
+.klien__head p { margin-top: 1rem; color: var(--muted); font-size: 1.02rem; line-height: 1.65; }
+.klien__count { display: flex; align-items: baseline; gap: .7rem; margin-top: 1.6rem; padding-top: 1.2rem; border-top: 1px solid var(--hair); }
+.klien__count strong { font-family: var(--font-display); font-size: 3.4rem; line-height: 1; color: var(--gold-deep); }
+.klien__count span { color: var(--ink-2); font-weight: 600; }
+.klien__panel { background: var(--ink); color: var(--cream); border-radius: var(--radius); padding: clamp(1.4rem, 3vw, 2.2rem); box-shadow: inset 0 3px 0 var(--emerald); }
+.klien__list { columns: 3 12rem; column-gap: 1.8rem; scroll-margin-top: calc(var(--nav-h) + 2rem); }
+.klien__list li { break-inside: avoid; position: relative; padding: .36rem 0 .36rem 1rem; font-size: .9rem; line-height: 1.35; color: rgba(247, 243, 232, .86); }
+.klien__list li::before { content: ""; position: absolute; left: 0; top: .9em; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
+.klien__list[data-collapsed] li:nth-child(n+31) { display: none; }
+.klien__foot { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid rgba(247, 243, 232, .1); }
+.klien__more { padding: .7rem 1.15rem; border-radius: 999px; border: 1px solid var(--hair); color: var(--gold-2); font-weight: 600; font-size: .9rem; transition: background .25s; }
+.klien__more:hover { background: rgba(201, 164, 92, .12); }
+.klien__note { font-size: .8rem; color: rgba(247, 243, 232, .5); }
+@media (max-width: 900px) {
+  .klien__grid { grid-template-columns: minmax(0, 1fr); }
+  .klien__head { position: static; }
+}
+@media (max-width: 600px) {
+  .klien__list { columns: 2; column-gap: 1rem; }
+  .klien__list li { font-size: .84rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feat__shot img, .klien__more { transition: none; }
 }
